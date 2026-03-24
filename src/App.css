@@ -1,0 +1,83 @@
+.container {
+	max-width: 900px;
+	margin: 0 auto;
+	padding: 2rem;
+	font-family: 'Inter', Arial, sans-serif;
+	background: #fff;
+}
+
+.section {
+	margin-bottom: 2.5rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-bottom: 1rem;
+}
+
+.tech-stack > div {
+	margin-bottom: 1rem;
+}
+
+.tags span {
+	display: inline-block;
+	background: #f3f4f6;
+	color: #222;
+	border-radius: 6px;
+	padding: 0.3em 0.8em;
+	margin: 0.2em 0.3em 0.2em 0;
+	font-size: 0.95em;
+}
+
+.projects {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 1rem;
+}
+
+.project-card {
+	background: #f9fafb;
+	border-radius: 8px;
+	padding: 1rem;
+	min-width: 220px;
+	flex: 1 1 220px;
+	box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+}
+
+.project-card h3 {
+	margin: 0 0 0.3em 0;
+}
+
+.project-card a {
+	color: #2563eb;
+	text-decoration: none;
+	font-size: 0.95em;
+}
+
+.experience-list {
+	list-style: none;
+	padding: 0;
+}
+
+.experience-list li {
+	margin-bottom: 0.8em;
+	font-size: 1.05em;
+}
+
+.experience-list strong {
+	display: inline-block;
+	min-width: 180px;
+}
+
+.certifications-list {
+	list-style: none;
+	padding: 0;
+}
+
+.certifications-list li {
+	background: #f3f4f6;
+	border-radius: 6px;
+	padding: 0.5em 1em;
+	margin-bottom: 0.5em;
+	font-size: 0.98em;
+}
