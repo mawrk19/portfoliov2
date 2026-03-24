@@ -5,9 +5,22 @@ import {
   ChevronRight, 
   CheckCircle2, 
   ExternalLink,
-  MessageSquare
+  MessageSquare,
+  Moon,
+  Sun,
+  Zap,
+  Brain,
+  ShieldCheck,
+  GraduationCap
 } from 'lucide-react'
+import { useState, useEffect, useRef } from 'react'
+import gsap from 'gsap'
+import { useGSAP } from '@gsap/react'
 import profileImage from './assets/mark.jpg'
+import img1 from './assets/img1.jpg'
+import img2 from './assets/img2.jpg'
+import img3 from './assets/img3.jpg'
+import img4 from './assets/img4.jpg'
 
 const symbol = '>';
 
@@ -33,11 +46,13 @@ const Instagram = ({ size = 24, ...props }) => (
   </svg>
 );
 
-const SectionTitle = ({ children, viewAllLink }) => (
+
+
+const SectionTitle = ({ children, viewAllLink, darkMode }) => (
   <div className="flex justify-between items-center mb-6">
-    <h2 className="text-xl font-bold text-zinc-900">{children}</h2>
+    <h2 className={`text-xl font-bold ${darkMode ? 'text-white' : 'text-zinc-900'}`}>{children}</h2>
     {viewAllLink && (
-      <a href={viewAllLink} className="text-slate-400 hover:text-slate-600 text-xs flex items-center gap-1 transition-colors">
+      <a href={viewAllLink} className={`${darkMode ? 'text-zinc-500 hover:text-zinc-300' : 'text-slate-400 hover:text-slate-600'} text-xs flex items-center gap-1 transition-colors`}>
         View All <ChevronRight size={12} />
       </a>
     )}
@@ -45,19 +60,71 @@ const SectionTitle = ({ children, viewAllLink }) => (
 )
 
 function App() {
+  const [darkMode, setDarkMode] = useState(false)
+  const containerRef = useRef()
+
+  useGSAP(() => {
+    if (darkMode) {
+      gsap.to(containerRef.current, {
+        backgroundColor: '#000000',
+        color: '#ffffff',
+        duration: 0.5,
+        ease: 'power2.inOut'
+      })
+      gsap.to('.theme-container', {
+        backgroundColor: '#000000',
+        color: '#ffffff',
+        borderColor: '#18181b', // zinc-900
+        duration: 0.5,
+        ease: 'power2.inOut'
+      })
+      document.documentElement.classList.add('dark')
+    } else {
+      gsap.to(containerRef.current, {
+        backgroundColor: '#ffffff',
+        color: '#000000',
+        duration: 0.5,
+        ease: 'power2.inOut'
+      })
+      gsap.to('.theme-container', {
+        backgroundColor: '#ffffff',
+        color: '#000000',
+        borderColor: '#f1f5f9', // slate-100
+        duration: 0.5,
+        ease: 'power2.inOut'
+      })
+      document.documentElement.classList.remove('dark')
+    }
+  }, { dependencies: [darkMode], scope: containerRef })
+
   return (
-    <div className="min-h-screen bg-[#fafbfc]">
+    <div ref={containerRef} className="min-h-screen overflow-x-hidden selection:bg-blue-500 selection:text-white">
       {/* Header */}
-      <header className="bg-white max-w-4xl mx-auto px-6 pt-10 pb-6">
+      <header className={`theme-container ${darkMode ? 'bg-black text-white' : 'bg-white text-zinc-900'} max-w-4xl mx-auto px-6 pt-10 pb-6 border-b border-slate-100 dark:border-zinc-800`}>
         <div className="flex flex-col md:flex-row md:items-center md:gap-8">
-          <div className="flex-shrink-0 flex justify-center md:block">
-            <img src={profileImage} alt="Mark Acedo" className="w-40 h-40 rounded-2xl object-cover border-2 border-slate-100 shadow-xl" />
+          <div className="flex-shrink-0 flex justify-center md:block relative">
+            <img src={profileImage} alt="Mark Acedo" className="w-40 h-40 rounded-2xl object-cover border-2 border-slate-100 dark:border-zinc-800 shadow-xl" />
           </div>
           
-          <div className="flex-1 mt-6 md:mt-0">
+          <div className="flex-1 mt-6 md:mt-0 relative">
+            {/* Dark Mode Rectangular Toggle */}
+            <div className="absolute right-0 top-0">
+              <button 
+                onClick={() => setDarkMode(!darkMode)}
+                className="w-14 h-7 bg-slate-100 dark:bg-zinc-800 rounded-lg p-1 transition-all relative overflow-hidden group border border-slate-200 dark:border-zinc-700"
+              >
+                <div className={`absolute inset-0 bg-blue-500 transition-transform duration-500 ${darkMode ? 'translate-x-0' : '-translate-x-full'}`}></div>
+                <div 
+                  className={`w-5 h-5 bg-white dark:bg-zinc-100 rounded-md shadow-sm transition-all duration-300 relative z-10 flex items-center justify-center ${darkMode ? 'translate-x-7' : 'translate-x-0'}`}
+                >
+                  {darkMode ? <Moon size={10} className="text-blue-600" /> : <Sun size={10} className="text-amber-500" />}
+                </div>
+              </button>
+            </div>
+            
             <div className="space-y-3">
               <div className="flex items-center gap-2">
-                <h1 className="text-3xl font-extrabold text-zinc-900 tracking-tight">Mark Acedo</h1>
+                <h1 className={`text-3xl font-extrabold tracking-tight ${darkMode ? 'text-white' : 'text-zinc-900'}`}>Mark Acedo</h1>
                 <CheckCircle2 size={18} className="text-blue-500 fill-blue-500" />
               </div>
               
@@ -82,10 +149,10 @@ function App() {
                   Schedule a Call
                   <ChevronRight size={14} className="ml-1 opacity-50" />
                 </button> */}
-                <button className="bg-white border border-slate-200 text-slate-700 px-5 py-2.5 text-sm font-semibold flex items-center gap-2 hover:bg-slate-50 hover:border-slate-300 transition-all active:scale-95">
+                <a href="mailto:gercee19@gmail.com" className="bg-white border border-slate-200 text-slate-700 px-5 py-2.5 rounded-lg text-sm font-semibold flex items-center gap-2 hover:bg-slate-50 hover:border-slate-300 transition-all active:scale-95 shadow-sm">
                   <Mail size={14} className="text-slate-400" />
                   Send Email
-                </button>
+                </a>
                 {/* <button className="bg-white border border-slate-200 text-slate-700 px-5 py-2.5  text-sm font-semibold flex items-center gap-2 hover:bg-slate-50 hover:border-slate-300 transition-all group active:scale-95">
                   <BookOpen size={14} className="text-slate-400" />
                   Read my Blog
@@ -103,13 +170,13 @@ function App() {
         <div className="space-y-12">
           {/* About Section */}
           <section className="space-y-6">
-            <h2 className="text-xl font-bold text-zinc-900">About</h2>
-            <div className="space-y-4 text-[15px] leading-relaxed text-slate-600 max-w-2xl">
+            <h2 className={`text-xl font-bold ${darkMode ? 'text-white' : 'text-zinc-900'}`}>About</h2>
+            <div className={`space-y-4 text-[15px] leading-relaxed max-w-2xl ${darkMode ? 'text-zinc-400' : 'text-slate-600'}`}>
               <p>
-                I'm a full-stack software engineer specializing in developing solutions with JavaScript, Python, and PHP. I work on projects including building modern web applications, mobile apps, search engine optimization, digital marketing, and making code tutorials.
+                I'm a full-stack software engineer specializing in developing solutions with JavaScript, Python, and PHP. I work on projects including building modern web applications, mobile apps, search engine optimization and digital marketing.
               </p>
               <p>
-                I've helped startups and MSMEs grow and streamline their processes through software solutions. I've also built a community of over 200,000 developers sharing knowledge and mentorship.
+                I've helped startups and MSMEs grow and streamline their processes through software solutions.
               </p>
               <p>
                 Lately, I've been diving deeper into the world of artificial intelligence, focusing on integrating AI tools and techniques into modern applications. My work now includes developing AI-powered solutions, creating intelligent applications, and leveraging generative AI to optimize development workflows and deliver cutting-edge technology.
@@ -119,33 +186,33 @@ function App() {
 
           {/* Tech Stack */}
           <section>
-            <div className="bg-white rounded-xl shadow-sm p-6">
+            <div className={`theme-container rounded-xl shadow-sm p-6 border ${darkMode ? 'bg-black text-white' : 'bg-white text-zinc-900'}`}>
               <div className="flex justify-between items-center mb-4">
-                <div className="font-bold text-base text-zinc-900">Tech Stack</div>
-                <a href="#" className="text-xs text-slate-400 hover:text-blue-500 flex items-center gap-1">View All <ChevronRight size={14} /></a>
+                <div className={`font-bold text-base ${darkMode ? 'text-white' : 'text-zinc-900'}`}>Tech Stack</div>
+                <a href="#" className={`text-xs flex items-center gap-1 ${darkMode ? 'text-zinc-500 hover:text-blue-400' : 'text-slate-400 hover:text-blue-500'}`}>View All <ChevronRight size={14} /></a>
               </div>
               <div className="space-y-4">
                 <div>
-                  <div className="font-semibold text-xs text-slate-500 mb-2">Frontend</div>
+                  <div className="font-semibold text-xs text-slate-500 dark:text-zinc-500 mb-2">Frontend</div>
                   <div className="flex flex-wrap gap-2 text-xs">
                     {['JavaScript', 'TypeScript', 'React', 'Next.js', 'Vue.js', 'Tailwind CSS'].map(tech => (
-                      <span key={tech} className="bg-slate-100 px-2 py-1 rounded">{tech}</span>
+                      <span key={tech} className={`border px-2.5 py-1 rounded-md transition-all ${darkMode ? 'bg-black text-white border-zinc-800' : 'bg-white text-slate-600 border-slate-200'}`}>{tech}</span>
                     ))}
                   </div>
                 </div>
                 <div>
-                  <div className="font-semibold text-xs text-slate-500 mb-2">Backend</div>
+                  <div className={`font-semibold text-xs mb-2 ${darkMode ? 'text-zinc-500' : 'text-slate-500'}`}>Backend</div>
                   <div className="flex flex-wrap gap-2 text-xs">
                     {['Node.js', 'Python', 'PHP', 'Laravel', 'PostgreSQL', 'MongoDB'].map(tech => (
-                      <span key={tech} className="bg-slate-100 px-2 py-1 rounded">{tech}</span>
+                      <span key={tech} className={`border px-2.5 py-1 rounded-md transition-all ${darkMode ? 'bg-black text-white border-zinc-800' : 'bg-white text-slate-600 border-slate-200'}`}>{tech}</span>
                     ))}
                   </div>
                 </div>
                 <div>
-                  <div className="font-semibold text-xs text-slate-500 mb-2">DevOps & Cloud</div>
+                  <div className={`font-semibold text-xs mb-2 ${darkMode ? 'text-zinc-500' : 'text-slate-500'}`}>DevOps & Cloud</div>
                   <div className="flex flex-wrap gap-2 text-xs">
-                    {['AWS', 'Docker', 'Kubernetes', 'GitHub Actions'].map(tech => (
-                      <span key={tech} className="bg-slate-100 px-2 py-1 rounded">{tech}</span>
+                    {['Docker', 'GitHub Actions'].map(tech => (
+                      <span key={tech} className={`border px-2.5 py-1 rounded-md transition-all ${darkMode ? 'bg-black text-white border-zinc-800' : 'bg-white text-slate-600 border-slate-200'}`}>{tech}</span>
                     ))}
                   </div>
                 </div>
@@ -153,26 +220,6 @@ function App() {
             </div>
           </section>
 
-          {/* Recent Projects */}
-          <section>
-            <SectionTitle viewAllLink="#">Recent Projects</SectionTitle>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {[
-                { title: 'JuanCharge', desc: 'Smart Iot Reverse vendo', link: 'juan-charge.vercel.app' },
-                { title: 'SAGE AI', desc: 'AI Story telling game', link: 'sage-ai.vercel.app' },
-                { title: 'Virmonte', desc: 'AI-powered virus simulation', link: 'virmonte.vercel.app' },
-                { title: 'Elevate', desc: 'LMS', link: 'elevate.enterprisesuite.ph' }
-              ].map((proj) => (
-                <div key={proj.title} className="group p-5 bg-white border border-slate-100 rounded-xl hover:border-slate-300 hover:bg-slate-50/50 transition-all cursor-pointer">
-                  <h3 className="font-bold text-zinc-900 group-hover:text-blue-600 transition-colors uppercase tracking-tight">{proj.title}</h3>
-                  <p className="text-xs text-slate-500 mt-1 mb-3">{proj.desc}</p>
-                  <div className="inline-flex items-center gap-1.5 px-2 py-1 bg-slate-100 rounded text-[10px] font-medium text-slate-500 group-hover:bg-blue-50 group-hover:text-blue-600 transition-colors">
-                    {proj.link}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </section>
         </div>
 
         {/* Right Column / Sidebar */}
@@ -227,8 +274,8 @@ function App() {
 
           {/* Experience Timeline */}
           <section className="space-y-6">
-            <h2 className="text-lg font-bold text-zinc-900">Experience</h2>
-            <div className="space-y-6 relative before:absolute before:left-[11px] before:top-2 before:bottom-0 before:w-px before:bg-slate-100">
+            <h2 className={`text-lg font-bold ${darkMode ? 'text-white' : 'text-zinc-900'}`}>Experience</h2>
+            <div className={`space-y-6 relative before:absolute before:left-[11px] before:top-2 before:bottom-0 before:w-px ${darkMode ? 'before:bg-zinc-800' : 'before:bg-slate-100'}`}>
               {[
                 { role: 'Software Developer', company: 'Decode Technologies', year: '2026' },
                 { role: 'Intern Developer', company: 'Decode Technologies', year: '2025' },
@@ -236,15 +283,15 @@ function App() {
                 { role: 'Hello World! 🚀', company: 'Wrote my first line of code', year: '2020' },
               ].map((exp, idx) => (
                 <div key={exp.role + idx} className="flex gap-4 relative group">
-                  <div className="mt-1.5 w-[22px] h-[22px] rounded border border-slate-200 bg-white flex items-center justify-center shrink-0 z-10 group-hover:border-blue-500 transition-colors">
-                    <div className="w-1.5 h-1.5 bg-slate-300 rounded-full group-hover:bg-blue-500 transition-colors"></div>
+                  <div className={`mt-1.5 w-[22px] h-[22px] rounded border flex items-center justify-center shrink-0 z-10 group-hover:border-blue-500 transition-colors ${darkMode ? 'bg-black border-zinc-800' : 'bg-white border-slate-200'}`}>
+                    <div className={`w-1.5 h-1.5 rounded-full group-hover:bg-blue-500 transition-colors ${darkMode ? 'bg-zinc-800 border-zinc-700' : 'bg-white border-slate-200'} border`}></div>
                   </div>
                   <div className="flex-1 -mt-1">
                     <div className="flex justify-between items-start">
-                      <h4 className="text-sm font-bold text-zinc-900 leading-tight">{exp.role}</h4>
-                      <span className="text-[10px] font-bold text-slate-400 font-mono tracking-tighter">{exp.year}</span>
+                      <h4 className={`text-sm font-bold leading-tight ${darkMode ? 'text-white' : 'text-zinc-900'}`}>{exp.role}</h4>
+                      <span className={`text-[10px] font-bold font-mono tracking-tighter ${darkMode ? 'text-zinc-600' : 'text-slate-400'}`}>{exp.year}</span>
                     </div>
-                    <p className="text-xs text-slate-500 leading-snug mt-1">{exp.company}</p>
+                    <p className={`text-xs leading-snug mt-1 ${darkMode ? 'text-zinc-400' : 'text-slate-500'}`}>{exp.company}</p>
                   </div>
                 </div>
               ))}
@@ -253,12 +300,38 @@ function App() {
         </div>
       </main>
 
+      {/* Recent Projects (Full Width Row) */}
+      <div className="max-w-4xl mx-auto px-6 pb-20 mt-12">
+        <SectionTitle darkMode={darkMode} viewAllLink="#">Recent Projects</SectionTitle>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {[
+            { title: 'JuanCharge', desc: 'Smart Iot Reverse vendo', link: 'juan-charge.vercel.app', color: 'bg-blue-500', icon: Zap },
+            { title: 'SAGE AI', desc: 'AI Story telling game', link: 'sage-ai.vercel.app', color: 'bg-zinc-900', icon: Brain },
+            { title: 'Virmonte', desc: 'AI-powered virus simulation', link: 'virmonte.vercel.app', color: 'bg-indigo-500', icon: ShieldCheck },
+            { title: 'Elevate', desc: 'LMS Platform', link: 'elevate.enterprisesuite.ph', color: 'bg-emerald-500', icon: GraduationCap }
+          ].map((proj) => (
+            <div key={proj.title} className={`theme-container group p-5 border rounded-2xl hover:border-slate-300 dark:hover:border-zinc-700 hover:shadow-xl hover:shadow-slate-200/50 dark:hover:shadow-zinc-900/50 shadow-sm transition-shadow cursor-pointer flex flex-col justify-between h-full ${darkMode ? 'bg-black' : 'bg-white'}`}>
+              <div>
+                <div className={`w-8 h-8 rounded-lg ${proj.color} mb-4 flex items-center justify-center`}>
+                  <proj.icon size={16} className="text-white fill-white/10" />
+                </div>
+                <h3 className={`font-bold text-sm group-hover:text-blue-600 transition-colors uppercase tracking-tight ${darkMode ? 'text-white' : 'text-zinc-900'}`}>{proj.title}</h3>
+                <p className={`text-[11px] mt-2 mb-4 leading-relaxed ${darkMode ? 'text-zinc-500' : 'text-slate-500'}`}>{proj.desc}</p>
+              </div>
+              <div className="inline-flex items-center gap-1.5 px-2 py-1 bg-white border border-slate-200 dark:border-zinc-800 text-[10px] font-bold text-slate-500 dark:text-zinc-400 group-hover:bg-blue-50 dark:group-hover:bg-blue-900/30 group-hover:text-blue-600 transition-colors w-fit rounded-md">
+                {proj.link}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
       {/* Full Width Sections */}
       <div className="max-w-4xl mx-auto px-6 pb-20 space-y-20">
         {/* Recommendations & Certifications Row */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
           <section>
-            <SectionTitle viewAllLink="#">Recent Certifications</SectionTitle>
+            <SectionTitle darkMode={darkMode} viewAllLink="#">Recent Certifications</SectionTitle>
             <div className="space-y-3">
               {[
                 { title: 'Huawei Developer Expert', issuer: 'Huawei' },
@@ -266,10 +339,10 @@ function App() {
                 { title: 'Software Engineering', issuer: 'HackerRank' },
                 { title: 'Generative AI Professional', issuer: 'Oracle' }
               ].map(cert => (
-                <div key={cert.title} className="p-4 bg-slate-50 rounded-xl border border-transparent hover:border-slate-200 hover:bg-white transition-all group flex justify-between items-center cursor-default">
+                <div key={cert.title} className={`theme-container p-4 rounded-xl border hover:border-slate-300 dark:hover:border-zinc-700 hover:shadow-lg hover:shadow-slate-200/20 transition-shadow group flex justify-between items-center cursor-default ${darkMode ? 'bg-black' : 'bg-white'}`}>
                   <div>
-                    <h4 className="text-sm font-bold text-zinc-900">{cert.title}</h4>
-                    <p className="text-[11px] text-slate-500">{cert.issuer}</p>
+                    <h4 className={`text-sm font-bold ${darkMode ? 'text-white' : 'text-zinc-900'}`}>{cert.title}</h4>
+                    <p className={`text-[11px] ${darkMode ? 'text-zinc-500' : 'text-slate-500'}`}>{cert.issuer}</p>
                   </div>
                   <ExternalLink size={14} className="text-slate-300 group-hover:text-blue-500 transition-colors" />
                 </div>
@@ -278,28 +351,28 @@ function App() {
           </section>
 
           <section>
-            <SectionTitle>Recommendations</SectionTitle>
-            <div className="relative p-8 bg-zinc-900 rounded-3xl overflow-hidden shadow-2xl">
-              <div className="absolute top-0 right-0 p-8 text-white/5 pointer-events-none">
+            <SectionTitle darkMode={darkMode}>Recommendations</SectionTitle>
+            <div className={`theme-container relative p-8 rounded-3xl overflow-hidden shadow-xl border ${darkMode ? 'bg-black' : 'bg-white'}`}>
+              <div className="absolute top-0 right-0 p-8 text-black/5 dark:text-white/5 pointer-events-none">
                 <MessageSquare size={120} strokeWidth={4} />
               </div>
               <div className="space-y-6 relative">
-                <p className="text-white text-lg font-medium leading-relaxed italic">
+                <p className={`text-lg font-medium leading-relaxed italic ${darkMode ? 'text-white' : 'text-zinc-900'}`}>
                   "Intelligent software engineer. Mark takes lead during software development and can handle and manage teams well."
                 </p>
                 <div className="flex items-center gap-4">
-                  <div className="w-10 h-10 rounded-full bg-slate-700 animate-pulse"></div>
+                  <div className="w-10 h-10 rounded-full bg-slate-100 dark:bg-zinc-800"></div>
                   <div>
-                    <h4 className="text-white text-sm font-bold">Ken Gorre</h4>
-                    <p className="text-slate-400 text-xs">Senior Developer at Tutsode</p>
+                    <h4 className="text-zinc-900 dark:text-zinc-100 text-sm font-bold">Ken Gorre</h4>
+                    <p className="text-slate-500 dark:text-zinc-500 text-xs">Senior Developer at Tutsode</p>
                   </div>
                 </div>
               </div>
               <div className="flex gap-1.5 mt-8">
-                <div className="w-2 h-2 rounded-full bg-white"></div>
-                <div className="w-2 h-2 rounded-full bg-white/20"></div>
-                <div className="w-2 h-2 rounded-full bg-white/20"></div>
-                <div className="w-2 h-2 rounded-full bg-white/20"></div>
+                <div className="w-2 h-2 rounded-full bg-blue-500"></div>
+                <div className="w-2 h-2 rounded-full bg-slate-200"></div>
+                <div className="w-2 h-2 rounded-full bg-slate-200"></div>
+                <div className="w-2 h-2 rounded-full bg-slate-200"></div>
               </div>
             </div>
           </section>
@@ -311,37 +384,37 @@ function App() {
             <h3 className="text-[10px] font-bold uppercase tracking-widest text-slate-400">A member of</h3>
             <div className="space-y-4">
               <div className="flex items-center gap-3 group">
-                <div className="w-8 h-8 rounded bg-slate-100 shrink-0 group-hover:bg-slate-200 transition-colors"></div>
-                <p className="text-[11px] font-bold text-slate-600 leading-tight">Analytics & AI Association of the Philippines (AAP)</p>
-                <ExternalLink size={10} className="text-slate-300 ml-auto shrink-0" />
+                <div className="w-8 h-8 rounded border border-slate-100 dark:border-zinc-800 shrink-0 group-hover:bg-slate-50 dark:group-hover:bg-zinc-900 transition-colors"></div>
+                <p className="text-[11px] font-bold text-slate-600 dark:text-zinc-400 leading-tight">Google Developers Student Club(GDSC)</p>
+                <ExternalLink size={10} className="text-slate-300 dark:text-zinc-600 ml-auto shrink-0" />
               </div>
-              <div className="flex items-center gap-3 group">
+              {/* <div className="flex items-center gap-3 group">
                 <div className="w-8 h-8 rounded bg-slate-100 shrink-0 group-hover:bg-slate-200 transition-colors"></div>
                 <p className="text-[11px] font-bold text-slate-600 leading-tight">Philippine Software Industry Association</p>
                 <ExternalLink size={10} className="text-slate-300 ml-auto shrink-0" />
-              </div>
+              </div> */}
             </div>
           </section>
 
           <section className="space-y-4">
             <h3 className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Social Links</h3>
             <div className="space-y-3">
-              <a href="#" className="flex items-center gap-3 text-slate-600 hover:text-blue-600 transition-colors">
+              <a href="https://ph.linkedin.com/in/mark-acedo-402b17285" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-slate-600 hover:text-blue-600 transition-colors">
                 <Linkedin size={18} />
                 <span className="text-sm font-bold">LinkedIn</span>
               </a>
-              <a href="#" className="flex items-center gap-3 text-slate-600 hover:text-zinc-950 transition-colors">
+              <a href="https://github.com/mawrk19" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-slate-600 hover:text-zinc-950 transition-colors">
                 <Github size={18} />
                 <span className="text-sm font-bold">GitHub</span>
               </a>
-              <a href="#" className="flex items-center gap-3 text-slate-600 hover:text-pink-600 transition-colors">
+              <a href="https://www.instagram.com/gerceeacedo" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-slate-600 hover:text-pink-600 transition-colors">
                 <Instagram size={18} />
                 <span className="text-sm font-bold">Instagram</span>
               </a>
             </div>
           </section>
 
-          <section className="space-y-4">
+          {/* <section className="space-y-4">
             <h3 className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Speaking</h3>
             <div className="space-y-4">
               <p className="text-xs text-slate-500 leading-relaxed font-medium">
@@ -354,22 +427,20 @@ function App() {
                 </a>
               </div>
             </div>
-          </section>
+          </section> */}
 
           <section className="space-y-4">
             <h3 className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Links</h3>
             <div className="space-y-3">
               {[
-                { icon: Calendar, label: 'Schedule a Call' },
-                // { icon: BookOpen, label: 'Read my Blog' },
                 { icon: Mail, label: 'Contact me' }
               ].map((link, idx) => (
-                <a key={idx} href="#" className="flex items-center justify-between p-3 bg-slate-50 rounded-xl group hover:bg-white hover:shadow-lg hover:shadow-slate-200/50 transition-all border border-transparent hover:border-slate-100">
+                <a key={idx} href={link.label === 'Contact me' ? 'mailto:gercee19@gmail.com' : '#'} className="flex items-center justify-between p-3 bg-slate-50 dark:bg-zinc-900/50 rounded-xl group hover:bg-white dark:hover:bg-zinc-800 hover:shadow-lg hover:shadow-slate-200/50 dark:hover:shadow-zinc-900/50 transition-all border border-transparent hover:border-slate-100 dark:hover:border-zinc-700">
                   <div className="flex items-center gap-3">
                     <link.icon size={16} className="text-slate-400 group-hover:text-blue-500 transition-colors" />
-                    <span className="text-[11px] font-bold text-slate-600">{link.label}</span>
+                    <span className="text-[11px] font-bold text-slate-600 dark:text-zinc-300">{link.label}</span>
                   </div>
-                  <ChevronRight size={14} className="text-slate-300 group-hover:text-slate-950 transition-transform group-hover:translate-x-0.5" />
+                  <ChevronRight size={14} className="text-slate-300 dark:text-zinc-600 group-hover:text-slate-950 dark:group-hover:text-zinc-100 transition-transform group-hover:translate-x-0.5" />
                 </a>
               ))}
             </div>
@@ -378,13 +449,13 @@ function App() {
 
         {/* Gallery */}
         <section className="space-y-6 pt-10">
-          <SectionTitle>Gallery</SectionTitle>
-          <div className="flex gap-4 overflow-x-auto pb-4 -mx-6 px-6" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
-            {[1, 2, 3, 4, 5].map(i => (
-              <div key={i} className="w-[300px] h-[200px] rounded-2xl bg-slate-100 shrink-0 overflow-hidden border border-slate-200 group relative">
-                <img src={`/api/placeholder/300/200?text=Gallery+${i}`} alt={`Gallery ${i}`} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity p-4 flex items-end">
-                  <p className="text-white text-xs font-bold uppercase tracking-widest">Project Moment</p>
+          <SectionTitle darkMode={darkMode}>Gallery</SectionTitle>
+          <div className="flex gap-4 overflow-x-auto pb-4 -mx-6 px-6 hide-scrollbar" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+            {[img1, img2, img3, img4].map((img, i) => (
+              <div key={i} className="w-[300px] h-[200px] rounded-2xl bg-slate-100 dark:bg-zinc-900/50 shrink-0 overflow-hidden border border-slate-200 dark:border-zinc-800 group relative">
+                <img src={img} alt={`Gallery ${i + 1}`} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity p-4 flex items-end font-medium">
+                  <p className="text-white text-[10px] font-bold uppercase tracking-[0.2em]">Project Moment 0{i + 1}</p>
                 </div>
               </div>
             ))}
@@ -393,7 +464,7 @@ function App() {
 
         {/* Footer */}
         <footer className="pt-10 flex flex-col items-center gap-4 text-center">
-          <p className="text-xs font-bold text-slate-400">© 2025 Mark Acedo. All rights reserved.</p>
+          <p className="text-xs font-bold text-slate-400">© 2026 Mark Acedo. All rights reserved.</p>
         </footer>
       </div>
     </div>

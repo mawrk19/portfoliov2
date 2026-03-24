@@ -131,8 +131,7 @@ export default function App() {
             <div className="bg-white rounded-xl shadow-sm p-6">
               <div className="font-bold text-xs text-slate-400 mb-2">A member of</div>
               <div className="space-y-2 text-xs">
-                <div>Analytics & AI Association of the Philippines (AAP)</div>
-                <div>Philippine Software Industry Association</div>
+                <div>Google Developers Student Club(GDSC)</div>
               </div>
             </div>
             <div className="bg-white rounded-xl shadow-sm p-6">

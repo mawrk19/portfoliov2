@@ -2,6 +2,10 @@
 
 @import "tailwindcss";
 
+@theme {
+  --variant-dark: (&:where(.dark, .dark *));
+}
+
 @layer base {
   body {
     font-family: 'Inter', sans-serif;
