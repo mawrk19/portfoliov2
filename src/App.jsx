@@ -314,7 +314,7 @@ function App() {
             { title: 'Juan Charge', desc: 'AI-powered IoT smart kiosk', link: 'juan-charge.vercel.app', color: 'bg-blue-500', icon: Zap },
             { title: 'Synthesize', desc: 'AI systems analyst for specs & handoffs', link: 'synthesize-client-kappa.vercel.app', color: 'bg-violet-500', icon: Sparkles },
             { title: 'Virmonte', desc: 'Virus transmission simulator', link: 'virmonte.vercel.app', color: 'bg-indigo-500', icon: ShieldCheck },
-            { title: 'Elevate', desc: 'LMS Platform', link: 'elevate.enterprisesuite.ph', color: 'bg-emerald-500', icon: GraduationCap }
+            // { title: 'Elevate', desc: 'LMS Platform', link: 'elevate.enterprisesuite.ph', color: 'bg-emerald-500', icon: GraduationCap }
           ].map((proj) => (
             <a
               key={proj.title}
