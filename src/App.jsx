@@ -9,18 +9,23 @@ import {
   Moon,
   Sun,
   Zap,
-  Brain,
   ShieldCheck,
-  GraduationCap
+  GraduationCap,
+  Sparkles
 } from 'lucide-react'
 import { useState, useEffect, useRef } from 'react'
 import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
 import profileImage from './assets/mark.jpg'
-import img1 from './assets/img1.jpg'
-import img2 from './assets/img2.jpg'
-import img3 from './assets/img3.jpg'
-import img4 from './assets/img4.jpg'
+import synthesize1 from './assets/synthesize-1.png'
+import synthesize2 from './assets/synthesize-2.png'
+import synthesize3 from './assets/synthesize-3.png'
+import synthesize4 from './assets/synthesize-4.png'
+import synthesize5 from './assets/synthesize-5.png'
+import synthesize6 from './assets/synthesize-6.png'
+import ciscoModernAiCert from './assets/cisco-modern-ai.png'
+import tesdaJavaNcIiiCert from './assets/tesda-java-nciii.png'
+import gdscLogo from './assets/gdsc-logo.png'
 
 const symbol = '>';
 
@@ -51,11 +56,12 @@ const Instagram = ({ size = 24, ...props }) => (
 const SectionTitle = ({ children, viewAllLink, darkMode }) => (
   <div className="flex justify-between items-center mb-6">
     <h2 className={`text-xl font-bold ${darkMode ? 'text-white' : 'text-zinc-900'}`}>{children}</h2>
-    {viewAllLink && (
+    {/* {viewAllLink 
+    ? (
       <a href={viewAllLink} className={`${darkMode ? 'text-zinc-500 hover:text-zinc-300' : 'text-slate-400 hover:text-slate-600'} text-xs flex items-center gap-1 transition-colors`}>
         View All <ChevronRight size={12} />
       </a>
-    )}
+    ) : null} */}
   </div>
 )
 
@@ -195,7 +201,7 @@ function App() {
                 <div>
                   <div className="font-semibold text-xs text-slate-500 dark:text-zinc-500 mb-2">Frontend</div>
                   <div className="flex flex-wrap gap-2 text-xs">
-                    {['JavaScript', 'TypeScript', 'React', 'Next.js', 'Vue.js', 'Tailwind CSS'].map(tech => (
+                    {['JavaScript', 'TypeScript', 'React', 'HTML/CSS', 'Tailwind CSS'].map(tech => (
                       <span key={tech} className={`border px-2.5 py-1 rounded-md transition-all ${darkMode ? 'bg-black text-white border-zinc-800' : 'bg-white text-slate-600 border-slate-200'}`}>{tech}</span>
                     ))}
                   </div>
@@ -203,7 +209,7 @@ function App() {
                 <div>
                   <div className={`font-semibold text-xs mb-2 ${darkMode ? 'text-zinc-500' : 'text-slate-500'}`}>Backend</div>
                   <div className="flex flex-wrap gap-2 text-xs">
-                    {['Node.js', 'Python', 'PHP', 'Laravel', 'PostgreSQL', 'MongoDB'].map(tech => (
+                    {['Node.js', 'Python', 'PHP', 'Laravel', 'MySQL', 'REST APIs'].map(tech => (
                       <span key={tech} className={`border px-2.5 py-1 rounded-md transition-all ${darkMode ? 'bg-black text-white border-zinc-800' : 'bg-white text-slate-600 border-slate-200'}`}>{tech}</span>
                     ))}
                   </div>
@@ -211,7 +217,7 @@ function App() {
                 <div>
                   <div className={`font-semibold text-xs mb-2 ${darkMode ? 'text-zinc-500' : 'text-slate-500'}`}>DevOps & Cloud</div>
                   <div className="flex flex-wrap gap-2 text-xs">
-                    {['Docker', 'GitHub Actions'].map(tech => (
+                    {['Docker', 'Git', 'AWS', 'CI/CD', 'AI / RAG'].map(tech => (
                       <span key={tech} className={`border px-2.5 py-1 rounded-md transition-all ${darkMode ? 'bg-black text-white border-zinc-800' : 'bg-white text-slate-600 border-slate-200'}`}>{tech}</span>
                     ))}
                   </div>
@@ -277,8 +283,8 @@ function App() {
             <h2 className={`text-lg font-bold ${darkMode ? 'text-white' : 'text-zinc-900'}`}>Experience</h2>
             <div className={`space-y-6 relative before:absolute before:left-[11px] before:top-2 before:bottom-0 before:w-px ${darkMode ? 'before:bg-zinc-800' : 'before:bg-slate-100'}`}>
               {[
-                { role: 'Software Developer', company: 'Decode Technologies', year: '2026' },
-                { role: 'Intern Developer', company: 'Decode Technologies', year: '2025' },
+                { role: 'Associate Software / AI Developer', company: 'Decode Technologies', year: '2025' },
+                { role: 'Contractual Software Developer', company: 'Kopilism', year: '2022' },
                 { role: 'BS Computer Science', company: 'University of Caloocan City', year: '2022' },
                 { role: 'Hello World! 🚀', company: 'Wrote my first line of code', year: '2020' },
               ].map((exp, idx) => (
@@ -305,12 +311,18 @@ function App() {
         <SectionTitle darkMode={darkMode} viewAllLink="#">Recent Projects</SectionTitle>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {[
-            { title: 'JuanCharge', desc: 'Smart Iot Reverse vendo', link: 'juan-charge.vercel.app', color: 'bg-blue-500', icon: Zap },
-            { title: 'SAGE AI', desc: 'AI Story telling game', link: 'sage-ai.vercel.app', color: 'bg-zinc-900', icon: Brain },
-            { title: 'Virmonte', desc: 'AI-powered virus simulation', link: 'virmonte.vercel.app', color: 'bg-indigo-500', icon: ShieldCheck },
+            { title: 'Juan Charge', desc: 'AI-powered IoT smart kiosk', link: 'juan-charge.vercel.app', color: 'bg-blue-500', icon: Zap },
+            { title: 'Synthesize', desc: 'AI systems analyst for specs & handoffs', link: 'synthesize-client-kappa.vercel.app', color: 'bg-violet-500', icon: Sparkles },
+            { title: 'Virmonte', desc: 'Virus transmission simulator', link: 'virmonte.vercel.app', color: 'bg-indigo-500', icon: ShieldCheck },
             { title: 'Elevate', desc: 'LMS Platform', link: 'elevate.enterprisesuite.ph', color: 'bg-emerald-500', icon: GraduationCap }
           ].map((proj) => (
-            <div key={proj.title} className={`theme-container group p-5 border rounded-2xl hover:border-slate-300 dark:hover:border-zinc-700 hover:shadow-xl hover:shadow-slate-200/50 dark:hover:shadow-zinc-900/50 shadow-sm transition-shadow cursor-pointer flex flex-col justify-between h-full ${darkMode ? 'bg-black' : 'bg-white'}`}>
+            <a
+              key={proj.title}
+              href={`https://${proj.link}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`theme-container group p-5 border rounded-2xl hover:border-slate-300 dark:hover:border-zinc-700 hover:shadow-xl hover:shadow-slate-200/50 dark:hover:shadow-zinc-900/50 shadow-sm transition-shadow cursor-pointer flex flex-col justify-between h-full ${darkMode ? 'bg-black' : 'bg-white'}`}
+            >
               <div>
                 <div className={`w-8 h-8 rounded-lg ${proj.color} mb-4 flex items-center justify-center`}>
                   <proj.icon size={16} className="text-white fill-white/10" />
@@ -321,7 +333,7 @@ function App() {
               <div className="inline-flex items-center gap-1.5 px-2 py-1 bg-white border border-slate-200 dark:border-zinc-800 text-[10px] font-bold text-slate-500 dark:text-zinc-400 group-hover:bg-blue-50 dark:group-hover:bg-blue-900/30 group-hover:text-blue-600 transition-colors w-fit rounded-md">
                 {proj.link}
               </div>
-            </div>
+            </a>
           ))}
         </div>
       </div>
@@ -334,19 +346,42 @@ function App() {
             <SectionTitle darkMode={darkMode} viewAllLink="#">Recent Certifications</SectionTitle>
             <div className="space-y-3">
               {[
-                { title: 'Huawei Developer Expert', issuer: 'Huawei' },
-                { title: 'Generative AI Leader', issuer: 'Google' },
-                { title: 'Software Engineering', issuer: 'HackerRank' },
-                { title: 'Generative AI Professional', issuer: 'Oracle' }
-              ].map(cert => (
-                <div key={cert.title} className={`theme-container p-4 rounded-xl border hover:border-slate-300 dark:hover:border-zinc-700 hover:shadow-lg hover:shadow-slate-200/20 transition-shadow group flex justify-between items-center cursor-default ${darkMode ? 'bg-black' : 'bg-white'}`}>
-                  <div>
-                    <h4 className={`text-sm font-bold ${darkMode ? 'text-white' : 'text-zinc-900'}`}>{cert.title}</h4>
-                    <p className={`text-[11px] ${darkMode ? 'text-zinc-500' : 'text-slate-500'}`}>{cert.issuer}</p>
+                { title: 'Introduction to Modern AI', issuer: 'Cisco Networking Academy', image: ciscoModernAiCert },
+                { title: 'Programming (JAVA) NCIII', issuer: 'TESDA', image: tesdaJavaNcIiiCert },
+                { title: 'Computer System Servicing NCII', issuer: 'TESDA' },
+                { title: 'Cloud Computing 101 by AWS', issuer: 'Amazon Web Services' }
+              ].map(cert => {
+                const content = (
+                  <>
+                    <div className="flex items-center gap-3 min-w-0">
+                      {cert.image && (
+                        <img
+                          src={cert.image}
+                          alt={cert.title}
+                          className="w-14 h-10 object-cover rounded-md border border-slate-200 dark:border-zinc-700 shrink-0"
+                        />
+                      )}
+                      <div className="min-w-0">
+                        <h4 className={`text-sm font-bold ${darkMode ? 'text-white' : 'text-zinc-900'}`}>{cert.title}</h4>
+                        <p className={`text-[11px] ${darkMode ? 'text-zinc-500' : 'text-slate-500'}`}>{cert.issuer}</p>
+                      </div>
+                    </div>
+                    <ExternalLink size={14} className="text-slate-300 group-hover:text-blue-500 transition-colors shrink-0" />
+                  </>
+                )
+
+                const className = `theme-container p-4 rounded-xl border hover:border-slate-300 dark:hover:border-zinc-700 hover:shadow-lg hover:shadow-slate-200/20 transition-shadow group flex justify-between items-center gap-3 ${darkMode ? 'bg-black' : 'bg-white'} ${cert.image ? 'cursor-pointer' : 'cursor-default'}`
+
+                return cert.image ? (
+                  <a key={cert.title} href={cert.image} target="_blank" rel="noopener noreferrer" className={className}>
+                    {content}
+                  </a>
+                ) : (
+                  <div key={cert.title} className={className}>
+                    {content}
                   </div>
-                  <ExternalLink size={14} className="text-slate-300 group-hover:text-blue-500 transition-colors" />
-                </div>
-              ))}
+                )
+              })}
             </div>
           </section>
 
@@ -384,7 +419,7 @@ function App() {
             <h3 className="text-[10px] font-bold uppercase tracking-widest text-slate-400">A member of</h3>
             <div className="space-y-4">
               <div className="flex items-center gap-3 group">
-                <div className="w-8 h-8 rounded border border-slate-100 dark:border-zinc-800 shrink-0 group-hover:bg-slate-50 dark:group-hover:bg-zinc-900 transition-colors"></div>
+                <img src={gdscLogo} alt="GDSC" className="w-8 h-8 rounded object-contain border border-slate-100 dark:border-zinc-800 shrink-0 bg-white p-0.5" />
                 <p className="text-[11px] font-bold text-slate-600 dark:text-zinc-400 leading-tight">Google Developers Student Club(GDSC)</p>
                 <ExternalLink size={10} className="text-slate-300 dark:text-zinc-600 ml-auto shrink-0" />
               </div>
@@ -451,11 +486,18 @@ function App() {
         <section className="space-y-6 pt-10">
           <SectionTitle darkMode={darkMode}>Gallery</SectionTitle>
           <div className="flex gap-4 overflow-x-auto pb-4 -mx-6 px-6 hide-scrollbar" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
-            {[img1, img2, img3, img4].map((img, i) => (
+            {[
+              { img: synthesize1, label: 'Landing' },
+              { img: synthesize2, label: 'Capabilities' },
+              { img: synthesize3, label: 'Workflow' },
+              { img: synthesize4, label: 'Dashboard' },
+              { img: synthesize5, label: 'SRS Document' },
+              { img: synthesize6, label: 'Diagrams' },
+            ].map((item, i) => (
               <div key={i} className="w-[300px] h-[200px] rounded-2xl bg-slate-100 dark:bg-zinc-900/50 shrink-0 overflow-hidden border border-slate-200 dark:border-zinc-800 group relative">
-                <img src={img} alt={`Gallery ${i + 1}`} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" />
+                <img src={item.img} alt={item.label} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity p-4 flex items-end font-medium">
-                  <p className="text-white text-[10px] font-bold uppercase tracking-[0.2em]">Project Moment 0{i + 1}</p>
+                  <p className="text-white text-[10px] font-bold uppercase tracking-[0.2em]">{item.label}</p>
                 </div>
               </div>
             ))}
