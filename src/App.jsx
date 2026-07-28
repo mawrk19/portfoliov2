@@ -5,7 +5,6 @@ import {
   ChevronRight, 
   CheckCircle2, 
   ExternalLink,
-  MessageSquare,
   Moon,
   Sun,
   Zap,
@@ -340,11 +339,11 @@ function App() {
 
       {/* Full Width Sections */}
       <div className="max-w-4xl mx-auto px-6 pb-20 space-y-20">
-        {/* Recommendations & Certifications Row */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
+        {/* Certifications */}
+        <div>
           <section>
             <SectionTitle darkMode={darkMode} viewAllLink="#">Recent Certifications</SectionTitle>
-            <div className="space-y-3">
+            <div className="space-y-3 max-w-xl">
               {[
                 { title: 'Introduction to Modern AI', issuer: 'Cisco Networking Academy', image: ciscoModernAiCert },
                 { title: 'Programming (JAVA) NCIII', issuer: 'TESDA', image: tesdaJavaNcIiiCert },
@@ -385,6 +384,7 @@ function App() {
             </div>
           </section>
 
+          {/* Recommendations — hidden for now
           <section>
             <SectionTitle darkMode={darkMode}>Recommendations</SectionTitle>
             <div className={`theme-container relative p-8 rounded-3xl overflow-hidden shadow-xl border ${darkMode ? 'bg-black' : 'bg-white'}`}>
@@ -411,6 +411,7 @@ function App() {
               </div>
             </div>
           </section>
+          */}
         </div>
 
         {/* 4-Column Footer Row */}
