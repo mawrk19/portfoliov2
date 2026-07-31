@@ -1,20 +1,124 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap');
 
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  --font-sans: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+  --color-bg: #ffffff;
+  --color-ink: #0a0a0a;
+  --color-mute: #737373;
+  --color-faint: #a3a3a3;
+  --color-line: #e5e5e5;
+  --color-soft: #f5f5f5;
+  --color-paper: #fafafa;
+  --color-card: #ffffff;
+  --color-inverse: #0a0a0a;
+  --color-on-inverse: #ffffff;
+  --color-dot: #d4d4d4;
+  --shadow-card: 0 12px 40px rgba(0, 0, 0, 0.08);
+  --shadow-float: 0 16px 48px rgba(0, 0, 0, 0.1);
+}
+
+html.dark {
+  --color-bg: #0a0a0a;
+  --color-ink: #f5f5f5;
+  --color-mute: #a3a3a3;
+  --color-faint: #737373;
+  --color-line: #262626;
+  --color-soft: #141414;
+  --color-paper: #111111;
+  --color-card: #111111;
+  --color-inverse: #f5f5f5;
+  --color-on-inverse: #0a0a0a;
+  --color-dot: #333333;
+  --shadow-card: 0 12px 40px rgba(0, 0, 0, 0.45);
+  --shadow-float: 0 16px 48px rgba(0, 0, 0, 0.55);
+}
+
 @theme {
-  --variant-dark: (&:where(.dark, .dark *));
+  --font-sans: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
 }
 
 @layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
   body {
-    font-family: 'Inter', sans-serif;
+    font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
-    @apply bg-[#FCFCFD] text-zinc-900;
+    background: var(--color-bg);
+    color: var(--color-ink);
+  }
+
+  ::selection {
+    background: var(--color-inverse);
+    color: var(--color-on-inverse);
   }
 }
 
-/* Hide scrollbar but allow scrolling */
 .hide-scrollbar::-webkit-scrollbar {
   display: none;
+}
+
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.dot-grid {
+  background-image: radial-gradient(circle, var(--color-dot) 0.7px, transparent 0.8px);
+  background-size: 14px 14px;
+}
+
+.section-rule {
+  border-top: 1px solid var(--color-line);
+}
+
+/* Circular theme explosion from the clicked icon */
+html.theme-exploding::view-transition-old(root),
+html.theme-exploding::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+html.theme-exploding::view-transition-old(root) {
+  z-index: 1;
+}
+
+html.theme-exploding::view-transition-new(root) {
+  z-index: 2147483646;
+  animation: theme-explode 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes theme-explode {
+  from {
+    clip-path: circle(0px at var(--theme-x) var(--theme-y));
+  }
+  to {
+    clip-path: circle(var(--theme-r) at var(--theme-x) var(--theme-y));
+  }
+}
+
+.theme-explode-fallback {
+  position: fixed;
+  inset: 0;
+  z-index: 2147483646;
+  pointer-events: none;
+  will-change: clip-path;
+  transition: clip-path 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.theme-exploding::view-transition-new(root) {
+    animation: none;
+  }
+
+  .theme-explode-fallback {
+    transition: none;
+  }
 }
