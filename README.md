@@ -1,17 +1,36 @@
-# React + Vite
+# Mark Acedo — Portfolio
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+React + Vite portfolio with a **resume-grounded RAG chatbot** (Groq).
 
-Currently, two official plugins are available:
+## Setup
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+```bash
+npm install
+cp .env.example .env
+```
 
-## React Compiler
+1. Create a free API key at [console.groq.com/keys](https://console.groq.com/keys)
+2. Put it in `.env`:
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+```env
+VITE_GROQ_API_KEY=gsk_your_key_here
+```
 
-## Expanding the ESLint configuration
+3. Run the app:
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
-# portfoliov2
+```bash
+npm run dev
+```
+
+Open the blue chat button (bottom-right) to ask employers-style questions about Mark.
+
+## How the RAG works
+
+1. Resume knowledge lives in `src/rag/resumeChunks.js` (source of truth)
+2. `retrieve.js` scores chunks with local TF cosine similarity
+3. Top chunks are injected into a Groq chat prompt (`llama-3.1-8b-instant`)
+4. Answers stay grounded; unknown facts point to `gercee19@gmail.com`
+
+Edit `resumeChunks.js` whenever your resume changes.
+
+> **Note:** `VITE_` keys are exposed in the browser bundle. Fine for local demos / low-limit Groq keys; for production, proxy Groq through a small backend so the key stays private.

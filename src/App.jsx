@@ -25,6 +25,7 @@ import synthesize6 from './assets/synthesize-6.png'
 import ciscoModernAiCert from './assets/cisco-modern-ai.png'
 import tesdaJavaNcIiiCert from './assets/tesda-java-nciii.png'
 import gdscLogo from './assets/gdsc-logo.png'
+import ResumeChatbot from './components/ResumeChatbot'
 
 const symbol = '>';
 
@@ -510,6 +511,8 @@ function App() {
           <p className="text-xs font-bold text-slate-400">© 2026 Mark Acedo. All rights reserved.</p>
         </footer>
       </div>
+
+      <ResumeChatbot darkMode={darkMode} />
     </div>
   )
 }
