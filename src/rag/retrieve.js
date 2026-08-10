@@ -1,5 +1,5 @@
 import { resumeChunks } from './resumeChunks'
-import { normalizeQuery } from './normalizeQuery'
+import { isEducationIntent, normalizeQuery } from './normalizeQuery'
 
 function tokenize(text) {
   return text
@@ -38,13 +38,13 @@ const indexed = resumeChunks.map((chunk) => ({
 
 /**
  * Retrieve the top-k most relevant resume chunks for a query.
- * Normalizes typos/slang first so messy questions still match.
+ * Normalizes typos/slang first; pins Education when schooling intent is clear.
  */
 export function retrieveChunks(query, topK = 4) {
   const normalized = normalizeQuery(query)
-  // Blend raw + normalized tokens so we don't lose exact matches.
   const qTf = termFreq([...tokenize(query), ...tokenize(normalized)])
-  return indexed
+
+  let ranked = indexed
     .map((chunk) => ({
       id: chunk.id,
       section: chunk.section,
@@ -52,8 +52,17 @@ export function retrieveChunks(query, topK = 4) {
       score: cosine(qTf, chunk.tf),
     }))
     .sort((a, b) => b.score - a.score)
-    .slice(0, topK)
-    .filter((c, i) => i === 0 || c.score > 0)
+
+  // Hard pin: education questions must include the Education chunk first.
+  if (isEducationIntent(query)) {
+    const edu = ranked.find((c) => c.id === 'education')
+    if (edu) {
+      ranked = [edu, ...ranked.filter((c) => c.id !== 'education')]
+      edu.score = Math.max(edu.score, 1)
+    }
+  }
+
+  return ranked.slice(0, topK).filter((c, i) => i === 0 || c.score > 0)
 }
 
 export function formatContext(chunks) {
@@ -64,7 +73,7 @@ export function formatContext(chunks) {
 
 /** Resume / employer topics we treat as in-scope even with weak lexical overlap. */
 const SCOPE_HINTS =
-  /\b(mark|acedo|gercee|resume|cv|experience|edu|educat|school|universit|degree|tesda|work|job|employ|decode|kopilism|project|juan\s*charge|synthesize|virmonte|skill|tech|stack|react|python|javascript|php|laravel|node|docker|aws|ai|rag|retrieval|vector|embed|n8n|automat|chatbot|chat\s*bot|assistant|certif|gdsc|google\s*developer|contact|email|linkedin|github|hire|portfolio|caloocan|manila|about\s+(him|mark)|who\s+is|background|strength|weakness|availab|salary|rate|role|position|thru|through|gonr?)\b/i
+  /\b(mark|acedo|gercee|resume|cv|experience|edu|educat|school|universit|degree|tesda|dean|gwa|work|job|employ|decode|project|juan\s*charge|synthesize|skill|tech|stack|react|python|javascript|php|laravel|node|docker|aws|ai|rag|retrieval|vector|qdrant|embed|n8n|automat|chatbot|chat\s*bot|assistant|certif|gdsc|google\s*developer|contact|email|linkedin|github|hire|portfolio|caloocan|manila|about\s+(him|mark)|who\s+is|background|strength|weakness|availab|salary|rate|role|position|thru|through|gonr?|dis)\b/i
 
 /** Clearly off-topic patterns (math, coding puzzles, general Q&A, jailbreaks, etc.). */
 const OUT_OF_SCOPE_PATTERNS = [
@@ -87,6 +96,8 @@ export function isInScope(query, chunks, minScore = 0.08) {
   if (!q) return false
 
   if (OUT_OF_SCOPE_PATTERNS.some((re) => re.test(q))) return false
+
+  if (isEducationIntent(q)) return true
 
   const topScore = chunks[0]?.score ?? 0
   if (topScore >= minScore) return true

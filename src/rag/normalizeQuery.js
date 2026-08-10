@@ -1,7 +1,7 @@
 /**
  * Normalize messy employer chat queries before retrieval.
  * Handles slang, abbreviations, and light typos so questions like
- * "what edu id mark gonr thru" still retrieve Education.
+ * "what edu dis he gon" still retrieve Education.
  */
 
 /** Exact token replacements (typos, slang, abbreviations). */
@@ -11,7 +11,9 @@ const TOKEN_MAP = {
   educ: 'education',
   educatn: 'education',
   eduction: 'education',
+  edcuation: 'education',
   schl: 'school',
+  schoolin: 'schooling',
   uni: 'university',
   univ: 'university',
   deg: 'degree',
@@ -40,6 +42,7 @@ const TOKEN_MAP = {
   chatbots: 'chatbots',
   automatn: 'automation',
   vectr: 'vector',
+  qdrnt: 'qdrant',
   // common chat typos / shorthand
   wht: 'what',
   wat: 'what',
@@ -49,9 +52,11 @@ const TOKEN_MAP = {
   wher: 'where',
   whn: 'when',
   id: 'did',
+  dis: 'did',
   didd: 'did',
+  d: 'did',
   hes: "he's",
-  his: 'his',
+  hee: 'he',
   gon: 'go',
   gonr: 'go',
   gone: 'go',
@@ -63,13 +68,6 @@ const TOKEN_MAP = {
   bout: 'about',
   plz: 'please',
   pls: 'please',
-  u: 'you',
-  ur: 'your',
-  r: 'are',
-  y: 'why',
-  w: 'with',
-  wth: 'with',
-  frm: 'from',
   hv: 'have',
   hav: 'have',
   haz: 'has',
@@ -78,6 +76,8 @@ const TOKEN_MAP = {
   shud: 'should',
   teh: 'the',
   thx: 'thanks',
+  frm: 'from',
+  wth: 'with',
 }
 
 /** Dictionary for fuzzy correction of unknown tokens. */
@@ -92,6 +92,8 @@ const VOCAB = [
   'does',
   'have',
   'has',
+  'he',
+  'his',
   'mark',
   'acedo',
   'education',
@@ -104,7 +106,6 @@ const VOCAB = [
   'job',
   'employer',
   'decode',
-  'kopilism',
   'project',
   'projects',
   'skills',
@@ -120,6 +121,7 @@ const VOCAB = [
   'rag',
   'vector',
   'database',
+  'qdrant',
   'n8n',
   'automation',
   'chatbot',
@@ -138,6 +140,8 @@ const VOCAB = [
   'available',
   'manila',
   'caloocan',
+  'stripe',
+  'yolo',
 ]
 
 function levenshtein(a, b) {
@@ -163,7 +167,6 @@ function fuzzyCorrect(token) {
   let best = token
   let bestDist = Infinity
   for (const word of VOCAB) {
-    // Skip wildly different lengths
     if (Math.abs(word.length - token.length) > 2) continue
     const dist = levenshtein(token, word)
     const maxDist = token.length <= 4 ? 1 : 2
@@ -181,6 +184,16 @@ function correctToken(token) {
   return fuzzyCorrect(token)
 }
 
+/** True when the (raw or normalized) query is asking about schooling. */
+export function isEducationIntent(query) {
+  const raw = (query || '').toLowerCase()
+  const normalized = normalizeQuery(query).toLowerCase()
+  const hay = `${raw} ${normalized}`
+  return /\b(edu|educat|school|universit|degree|tesda|dean|gwa|coursework|college|graduat)\b/.test(
+    hay,
+  )
+}
+
 /**
  * Expand / clean a raw user question for retrieval + model understanding.
  */
@@ -195,14 +208,17 @@ export function normalizeQuery(query) {
     .filter(Boolean)
 
   const corrected = tokens.map(correctToken)
-
-  // Phrase boosts for common recruiter shorthand
   let text = corrected.join(' ')
-  if (/\beducation\b/.test(text) && /\b(go|gone|through|thru)\b/.test(text)) {
-    text = `${text} education school university degree tesda`
+
+  // Any edu shorthand → strong education retrieval boost
+  if (/\b(edu|education|school|university|degree|tesda|college)\b/.test(`${raw.toLowerCase()} ${text}`)) {
+    text = `${text} education school university degree tesda coursework dean`
   }
   if (/\b(work|job|experience)\b/.test(text) && !/\beducation\b/.test(text)) {
-    text = `${text} work experience employer`
+    text = `${text} work experience employer decode`
+  }
+  if (/\b(skill|stack|tech)\b/.test(text)) {
+    text = `${text} skills tech stack laravel react qdrant n8n`
   }
 
   return text.replace(/\s+/g, ' ').trim()

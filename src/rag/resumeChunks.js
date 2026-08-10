@@ -1,127 +1,132 @@
 /**
  * Source of truth for the employer chatbot.
- * Structured from Mark's resume, with portfolio details filling blank sections
- * (Projects / Additional) so answers stay useful for recruiters.
+ * Synced from Mark_Acedo_Resume.pdf — keep this aligned when the resume changes.
  */
 export const resumeChunks = [
   {
     id: 'identity',
     section: 'Identity',
     text: `Name: Mark Relan Gercee Acedo (Mark Acedo).
-Location: Metro Manila, Philippines.
-Roles: AI | Software Developer.
+Location: Caloocan City, Metro Manila, Philippines.
+Phone: +63 9451933078.
+Roles: Software Developer | AI-focused engineer.
 Email: gercee19@gmail.com.
-LinkedIn: https://ph.linkedin.com/in/mark-acedo-402b17285
+LinkedIn: https://www.linkedin.com/in/mark-acedo-402b17285
 GitHub: https://github.com/mawrk19
-Instagram: https://www.instagram.com/gerceeacedo`,
+Portfolio: https://portfolio-ni-mawrk.vercel.app/`,
   },
   {
     id: 'about',
     section: 'About',
-    text: `Mark is a full-stack software engineer specializing in JavaScript, Python, and PHP.
-He builds modern web applications, mobile apps, and works with SEO and digital marketing.
-He has helped startups and MSMEs grow and streamline processes through software solutions.
-He is diving deeper into artificial intelligence — integrating AI tools into applications,
-building AI-powered solutions, and using generative AI to improve development workflows.
+    text: `Mark is a software developer focused on full-stack product work and applied AI.
+He ships production web apps with JavaScript/TypeScript, PHP (Laravel), React, and Node.js,
+and builds AI features using RAG (Retrieval-Augmented Generation), Qdrant vector search,
+n8n automation, and chatbot / agent workflows.
 
 Accomplishments & contributions:
-- Ships live products end-to-end (Juan Charge, Synthesize, Virmonte) — not just demos.
-- Helps startups and MSMEs streamline operations with practical software.
-- Actively applies RAG (Retrieval-Augmented Generation), vector databases, generative AI,
-  and n8n automation in real applications — including a resume-grounded chatbot on this portfolio.
-- Comfortable across frontend, backend, automation, and cloud tooling on lean teams.`,
+- Ships live AI products end-to-end (Synthesize, Juan Charge) — not just demos.
+- At Decode Technologies, built Laravel APIs for 30,000+ daily active users and React features
+  that improved sign-up conversion.
+- Integrates RAG, embeddings, NotebookLM, and intelligent chatbots into real LMS workflows.
+- Comfortable across frontend, backend, testing, automation, and cloud tooling.`,
   },
   {
     id: 'education',
     section: 'Education',
-    text: `Education:
-- University of Caloocan City — BS Computer Science (2022).
-- TESDA — Intensive program for JAVA Programming / Programming (JAVA) NC III.
-- TESDA — Computer System Servicing NC II.`,
+    text: `Education (always answer education questions from this section):
+- University of Caloocan City (Caloocan City) — BS Computer Science, Major in Software Engineering (2026).
+  General Weighted Average (GWA): 1.53; Dean's Lister, 2022–2026.
+  Relevant coursework: Data Structures & Algorithms, Software Engineering, Operating Systems,
+  Database Systems, Web & Mobile Development.
+- SEA GEM Training and Assessment Center, Inc. (Malate, Manila) — Intensive program for JAVA
+  Programming by TESDA (2022).
+
+When asked what education Mark went through / "edu" / school / degree: lead with UCC BS Computer
+Science (Software Engineering major), GWA, Dean's Lister, then TESDA JAVA training.`,
   },
   {
     id: 'work-experience',
     section: 'Work Experience',
     text: `Work Experience:
-- Decode Technologies — Associate Software / AI Developer (2025).
-  Builds software and AI-focused features in a production engineering environment.
-  Applies modern AI tooling to real product workflows — including RAG (Retrieval-Augmented Generation),
-  vector databases for semantic retrieval, and n8n automation for multi-step AI/ops pipelines.
-- Kopilism — Contractual Software Developer (2022).
-  Delivered client software end-to-end; learned to ship under deadlines with lean execution.
-He started coding in 2020 ("Hello World"), showing steady growth from learner to professional developer.`,
+- Decode Technologies (North Fairview, Quezon City) — Associate Software Developer (Aug 2025 – Present).
+  • Built and shipped REST APIs in Laravel serving 30,000+ daily active users, cutting average response time by 30%.
+  • Developed responsive front-end features in React and Tailwind CSS, increasing sign-up conversion by 25%.
+  • Wrote unit and integration tests (PHPUnit), raising code coverage from 40% to 85% and reducing production bugs.
+  • Integrated advanced AI into the LMS framework — internal documentation AI agents using Retrieval-Augmented
+    Generation (RAG), NotebookLM for automated content generation, and intelligent chatbots.`,
   },
   {
     id: 'projects',
     section: 'Projects',
-    text: `Projects (selected work that shows initiative and range):
-- Portfolio Resume Chatbot — employer-facing RAG chatbot grounded in Mark's resume.
-  Uses Retrieval-Augmented Generation (retrieve relevant resume chunks, then generate grounded answers),
-  scope guardrails, and rate limiting. Demonstrates practical chatbot + RAG experience, not just theory.
-- Juan Charge — AI-powered IoT smart kiosk. Shows ability to combine hardware/IoT concepts with AI.
-  Live: https://juan-charge.vercel.app
-- Synthesize — AI systems analyst for specs and handoffs. Strong example of practical AI product thinking.
+    text: `Projects:
+- Synthesize (AI-powered tool, 2026) — full-stack AI workspace that turns meeting transcripts, brain dumps,
+  and context files into SRS documents, Mermaid diagrams, database schemas, and gap analyses using Groq LLM
+  and Whisper via async Laravel queue jobs.
+  Architected modular Laravel REST API (Sanctum auth, RBAC) and React SPA (TanStack Router/Query, Ant Design)
+  with 10+ domain modules, stakeholder review links, and a live Mermaid diagram studio.
+  Designed multi-agent orchestration (Planner → Developer → Tester → Reviewer) with human-in-the-loop approval,
+  GitHub PR automation, and CI validation; deployed on Vercel, Render, and Neon PostgreSQL.
   Live: https://synthesize-client-kappa.vercel.app
-- Virmonte — Virus transmission simulator. Demonstrates problem-solving and building useful simulations.
-  Live: https://virmonte.vercel.app
-
-These projects show Mark can take ideas from concept to deployed product, including conversational AI.`,
+- Juan Charge (AI-powered IoT, 2025) — AI-driven smart kiosk powered by solar and wind energy for free
+  community charging. Integrated YOLOv11 for real-time trash classification and recyclable detection.
+  Engineered web/mobile dashboards & analytics (React/Laravel) for kiosk health, user management, and
+  waste-collection visualization.
+  Live: https://juan-charge.vercel.app
+- Portfolio Resume Chatbot — employer-facing RAG chatbot grounded in Mark's resume (retrieval, guardrails,
+  rate limiting). Demonstrates practical chatbot + RAG experience.`,
   },
   {
     id: 'ai-chatbots-rag',
     section: 'AI, Chatbots & Automation',
     text: `AI, chatbots, RAG, and automation experience:
-- Chatbots: Built a resume-grounded employer chatbot on this portfolio with retrieval, grounding,
-  guardrails, and rate limiting — relevant experience for conversational AI / assistant features.
-- RAG: Uses Retrieval-Augmented Generation (NOT "Reactive, Adaptive, Generative") — retrieve relevant
-  context first, then generate answers grounded in that context to reduce hallucination.
-- Vector databases: Works with vector/semantic search concepts for retrieving relevant knowledge chunks
-  when building RAG-style assistants and AI features.
-- n8n automation: Builds and wires n8n workflows to automate multi-step processes — connecting APIs,
-  AI steps, and operational triggers without brittle one-off scripts.
-- Broader AI product work: Juan Charge (AI-powered IoT kiosk) and Synthesize (AI systems analyst)
-  show he can apply AI beyond chat UIs into real product workflows.
+- Chatbots: Production intelligent chatbots and documentation AI agents at Decode Technologies (LMS),
+  plus a resume-grounded employer chatbot on this portfolio.
+- RAG: Retrieval-Augmented Generation (NOT "Reactive, Adaptive, Generative") — retrieve relevant context
+  first, then generate grounded answers. Used in Decode LMS agents and this portfolio assistant.
+- Vector databases: Hands-on with Qdrant for vector/semantic retrieval in RAG-style systems.
+- n8n automation: Uses n8n Automation for multi-step AI/ops workflows connecting APIs and triggers.
+- Computer vision: YOLOv11 on Juan Charge for real-time classification.
+- Multi-agent systems: Synthesize Planner → Developer → Tester → Reviewer pipeline with human-in-the-loop.
 
-When asked if Mark has chatbot experience: yes — he has hands-on chatbot + RAG experience from this
-portfolio assistant, plus related AI product work and automation with n8n and vector retrieval.`,
+When asked if Mark has chatbot experience: yes — Decode LMS intelligent chatbots/agents plus this
+portfolio RAG assistant, with RAG, Qdrant, and n8n in his stack.`,
   },
   {
     id: 'activities',
     section: 'Activities',
     text: `Activities / Memberships:
-- Google Developer Student Club PUP (GDSC) — member.
-  Reflects community involvement and staying connected to the developer ecosystem.`,
+- Google Developer Student Club PUP (GDSC) — Member (Aug 2024 – May 2026), Quezon City.
+  Helped organize 10+ hands-on coding workshops and a 3-day hackathon for 300+ students.`,
   },
   {
     id: 'certifications',
     section: 'Additional / Certifications',
-    text: `Additional / Certifications:
-- Introduction to Modern AI — Cisco Networking Academy.
+    text: `Additional / Certifications & languages:
 - Programming (JAVA) NC III — TESDA.
 - Computer System Servicing NC II — TESDA.
-- Cloud Computing 101 — Amazon Web Services (AWS).
-
-Shows continuous learning across AI, programming, systems, and cloud fundamentals.`,
+- freeCodeCamp — Full-Stack Web Development.
+Languages: English (fluent), Filipino (native).`,
   },
   {
     id: 'tech-stack',
     section: 'Tech Stack',
-    text: `Tech Stack:
-Frontend: JavaScript, TypeScript, React, HTML/CSS, Tailwind CSS.
-Backend: Node.js, Python, PHP, Laravel, MySQL, REST APIs.
-DevOps & AI: Docker, Git, AWS, CI/CD, RAG (Retrieval-Augmented Generation), vector databases, n8n automation.
+    text: `Technical Skills:
+Proficient: JavaScript/TypeScript, PHP (Laravel), React, Node.js, MySQL, HTML/CSS.
+Familiar: Python, C#, Git, Docker, REST APIs, CI/CD, AI, RAG (Retrieval-Augmented Generation),
+YOLOv11, n8n Automation, Qdrant (vector database), Stripe, AWS.
 
-Mark is comfortable working across the stack, which makes him adaptable for full-stack or AI-adjacent roles.`,
+Mark is strongest on Laravel + React full-stack delivery, with a clear applied-AI direction
+(RAG, chatbots, Qdrant, n8n, multi-agent workflows).`,
   },
   {
     id: 'employer-fit',
     section: 'Why hire Mark',
     text: `Why employers may find Mark a strong candidate:
-- Full-stack foundation with a clear AI direction — useful for teams modernizing products with AI.
-- Hands-on with chatbots, RAG (Retrieval-Augmented Generation), vector databases, and n8n automation.
-- Has shipped multiple live projects, which shows ownership and follow-through.
-- Experience with startups/MSMEs suggests he can work with limited resources and wear multiple hats.
-- Certifications and GDSC involvement show he keeps learning beyond day-to-day work.
-- Based in Metro Manila, Philippines; open to contact via gercee19@gmail.com or LinkedIn.`,
+- Proven production impact: Laravel APIs at 30k+ DAU, measurable conversion and coverage gains.
+- Full-stack foundation (React, Laravel, Node) with hands-on AI: RAG, Qdrant, n8n, chatbots, YOLOv11.
+- Ships complex products (Synthesize multi-agent workspace, Juan Charge IoT AI kiosk).
+- Strong academics: GWA 1.53, Dean's Lister; TESDA JAVA + freeCodeCamp full-stack.
+- GDSC organizer experience with workshops and a large student hackathon.
+- Based in Caloocan City, Metro Manila; contact gercee19@gmail.com, +63 9451933078, or LinkedIn.`,
   },
 ]

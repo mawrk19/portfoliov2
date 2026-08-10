@@ -25,7 +25,6 @@ import synthesize3 from './assets/synthesize-3.png'
 import synthesize4 from './assets/synthesize-4.png'
 import synthesize5 from './assets/synthesize-5.png'
 import synthesize6 from './assets/synthesize-6.png'
-import ciscoModernAiCert from './assets/cisco-modern-ai.png'
 import tesdaJavaNcIiiCert from './assets/tesda-java-nciii.png'
 import gdscLogo from './assets/gdsc-logo.png'
 import ResumeChatbot from './components/ResumeChatbot'
@@ -62,28 +61,28 @@ const NAV = [
 ]
 
 const STATS = [
-  { value: '3+', label: 'Live products' },
-  { value: '2+', label: 'Yrs coding' },
-  { value: '4', label: 'Certifications' },
+  { value: '2+', label: 'Live products' },
+  { value: '30k+', label: 'DAU APIs' },
+  { value: '3', label: 'Certifications' },
   { value: 'AI', label: 'Focus area' },
 ]
 
 const PROJECTS = [
   {
-    title: 'Juan Charge',
-    desc: 'AI-powered IoT smart kiosk — hardware thinking meets intelligent software, shipped live.',
-    tag: 'IoT · AI',
-    link: 'https://juan-charge.vercel.app',
-    color: 'bg-neutral-900',
-    icon: Zap,
-  },
-  {
     title: 'Synthesize',
-    desc: 'AI systems analyst for specs & handoffs — helps teams move from ideas to clear documentation faster.',
+    desc: 'AI workspace that turns transcripts and brain dumps into SRS docs, Mermaid diagrams, schemas, and gap analyses — multi-agent pipeline with human-in-the-loop.',
     tag: 'AI product',
     link: 'https://synthesize-client-kappa.vercel.app',
-    color: 'bg-neutral-800',
+    color: 'bg-neutral-900',
     icon: Sparkles,
+  },
+  {
+    title: 'Juan Charge',
+    desc: 'AI-powered IoT smart kiosk (solar + wind) with YOLOv11 trash classification and React/Laravel ops dashboards — shipped live.',
+    tag: 'IoT · AI',
+    link: 'https://juan-charge.vercel.app',
+    color: 'bg-neutral-800',
+    icon: Zap,
   },
   {
     title: 'Virmonte',
@@ -98,55 +97,49 @@ const PROJECTS = [
 const EXPERIENCE = [
   {
     year: '2025',
-    role: 'Associate Software / AI Developer',
+    role: 'Associate Software Developer',
     company: 'Decode Technologies',
     points: [
-      'Building software and AI-focused features in a production environment',
-      'Applying RAG (Retrieval-Augmented Generation), vector databases, and n8n automation to real product workflows',
+      'Shipped Laravel REST APIs for 30,000+ DAU (≈30% faster responses) and React/Tailwind features (+25% sign-up conversion)',
+      'Raised PHPUnit coverage 40% → 85%; integrated LMS AI agents with RAG, NotebookLM, and intelligent chatbots',
     ],
   },
   {
-    year: '2022',
-    role: 'Contractual Software Developer',
-    company: 'Kopilism',
-    points: [
-      'Delivered client software end-to-end under lean timelines',
-      'Gained professional delivery habits early in the journey',
-    ],
-  },
-  {
-    year: '2022',
-    role: 'BS Computer Science',
-    company: 'University of Caloocan City',
+    year: '2026',
+    role: 'BS Computer Science · Software Engineering',
+    company: 'University of Caloocan City · GWA 1.53 · Dean’s Lister',
     points: [],
   },
   {
-    year: '2020',
-    role: 'Hello World',
-    company: 'Wrote my first line of code',
+    year: '2022',
+    role: 'JAVA Programming (TESDA)',
+    company: 'SEA GEM Training and Assessment Center',
     points: [],
   },
 ]
 
 const STACK = {
-  Frontend: ['JavaScript', 'TypeScript', 'React', 'HTML/CSS', 'Tailwind CSS'],
-  Backend: ['Node.js', 'Python', 'PHP', 'Laravel', 'MySQL', 'REST APIs'],
-  'DevOps & AI': [
-    'Docker',
+  Proficient: ['JavaScript', 'TypeScript', 'PHP / Laravel', 'React', 'Node.js', 'MySQL', 'HTML/CSS'],
+  Familiar: [
+    'Python',
+    'C#',
     'Git',
-    'AWS',
+    'Docker',
+    'REST APIs',
     'CI/CD',
     'RAG',
-    'Vector DBs',
+    'Qdrant',
     'n8n',
+    'YOLOv11',
+    'Stripe',
+    'AWS',
   ],
 }
 
 const CERTS = [
-  { title: 'Introduction to Modern AI', issuer: 'Cisco Networking Academy', image: ciscoModernAiCert },
   { title: 'Programming (JAVA) NC III', issuer: 'TESDA', image: tesdaJavaNcIiiCert },
   { title: 'Computer System Servicing NC II', issuer: 'TESDA' },
-  { title: 'Cloud Computing 101', issuer: 'Amazon Web Services' },
+  { title: 'Full-Stack Web Development', issuer: 'freeCodeCamp' },
 ]
 
 const GALLERY = [
@@ -528,7 +521,9 @@ function App() {
                 />
                 <div>
                   <p className="text-[13px] font-semibold">Google Developer Student Club</p>
-                  <p className="text-[11px] text-[var(--color-faint)]">PUP · Member</p>
+                  <p className="text-[11px] text-[var(--color-faint)]">
+                    PUP · Member · 10+ workshops · 300+ hackathon
+                  </p>
                 </div>
               </div>
             </div>
@@ -564,9 +559,8 @@ function App() {
             <SectionHead num="06" title="about & contact" />
             <div className="dot-grid border border-[var(--color-line)] p-6 sm:p-8">
               <p className="text-[15px] leading-relaxed text-[var(--color-mute)] max-w-xl">
-                I help startups and MSMEs ship software that actually moves the needle — and lately I&apos;ve been deep in AI,
-                RAG (Retrieval-Augmented Generation), vector databases, n8n automation, and generative tooling. If you&apos;re
-                hiring for full-stack or AI-adjacent roles, let&apos;s talk.
+                I ship production Laravel + React products and applied AI — RAG (Retrieval-Augmented Generation), Qdrant,
+                n8n automation, and intelligent chatbots. If you&apos;re hiring for full-stack or AI-adjacent roles, let&apos;s talk.
               </p>
               <div className="mt-6 flex flex-wrap gap-3">
                 <a
