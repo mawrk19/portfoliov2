@@ -102,7 +102,7 @@ const EXPERIENCE = [
     company: 'Decode Technologies',
     points: [
       'Building software and AI-focused features in a production environment',
-      'Applying modern AI tooling to real product workflows',
+      'Applying RAG (Retrieval-Augmented Generation), vector databases, and n8n automation to real product workflows',
     ],
   },
   {
@@ -131,7 +131,15 @@ const EXPERIENCE = [
 const STACK = {
   Frontend: ['JavaScript', 'TypeScript', 'React', 'HTML/CSS', 'Tailwind CSS'],
   Backend: ['Node.js', 'Python', 'PHP', 'Laravel', 'MySQL', 'REST APIs'],
-  'DevOps & AI': ['Docker', 'Git', 'AWS', 'CI/CD', 'AI / RAG'],
+  'DevOps & AI': [
+    'Docker',
+    'Git',
+    'AWS',
+    'CI/CD',
+    'RAG',
+    'Vector DBs',
+    'n8n',
+  ],
 }
 
 const CERTS = [
@@ -557,7 +565,8 @@ function App() {
             <div className="dot-grid border border-[var(--color-line)] p-6 sm:p-8">
               <p className="text-[15px] leading-relaxed text-[var(--color-mute)] max-w-xl">
                 I help startups and MSMEs ship software that actually moves the needle — and lately I&apos;ve been deep in AI,
-                RAG, and generative tooling. If you&apos;re hiring for full-stack or AI-adjacent roles, let&apos;s talk.
+                RAG (Retrieval-Augmented Generation), vector databases, n8n automation, and generative tooling. If you&apos;re
+                hiring for full-stack or AI-adjacent roles, let&apos;s talk.
               </p>
               <div className="mt-6 flex flex-wrap gap-3">
                 <a

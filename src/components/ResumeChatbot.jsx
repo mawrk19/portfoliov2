@@ -1,20 +1,18 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { MessageCircle, Send, X, Loader2 } from 'lucide-react'
 import { askAboutMark } from '../rag/askGroq'
 import { checkRateLimit } from '../rag/rateLimiter'
+import { COMPLETIONS, getCompletions, getGhostSuffix } from '../rag/completions'
 
-const SUGGESTIONS = [
-  "What is Mark's education?",
-  'Where has Mark worked?',
-  'What projects has he built?',
-  'What makes Mark a strong hire?',
-]
+const SUGGESTIONS = COMPLETIONS.slice(0, 4)
 
 export default function ResumeChatbot() {
   const [open, setOpen] = useState(false)
   const [input, setInput] = useState('')
   const [loading, setLoading] = useState(false)
   const [cooldownSec, setCooldownSec] = useState(0)
+  const [activeSuggestion, setActiveSuggestion] = useState(0)
+  const [showSuggestions, setShowSuggestions] = useState(false)
   const [messages, setMessages] = useState([
     {
       role: 'assistant',
@@ -24,6 +22,13 @@ export default function ResumeChatbot() {
   ])
   const bottomRef = useRef(null)
   const inputRef = useRef(null)
+
+  const suggestions = useMemo(() => getCompletions(input, 5), [input])
+  const ghostSuffix = useMemo(() => getGhostSuffix(input), [input])
+
+  useEffect(() => {
+    setActiveSuggestion(0)
+  }, [input])
 
   useEffect(() => {
     if (cooldownSec <= 0) return undefined
@@ -63,12 +68,14 @@ export default function ResumeChatbot() {
         },
       ])
       setInput('')
+      setShowSuggestions(false)
       return
     }
 
     const nextHistory = [...messages, { role: 'user', content: question }]
     setMessages(nextHistory)
     setInput('')
+    setShowSuggestions(false)
     setLoading(true)
 
     try {
@@ -104,12 +111,40 @@ export default function ResumeChatbot() {
     }
   }
 
+  function acceptSuggestion(text) {
+    setInput(text)
+    setShowSuggestions(false)
+    inputRef.current?.focus()
+  }
+
+  function onKeyDown(e) {
+    if (e.key === 'Tab' && ghostSuffix) {
+      e.preventDefault()
+      setInput((prev) => prev + ghostSuffix)
+      setShowSuggestions(false)
+      return
+    }
+
+    if (!showSuggestions || suggestions.length === 0) return
+
+    if (e.key === 'ArrowDown') {
+      e.preventDefault()
+      setActiveSuggestion((i) => (i + 1) % suggestions.length)
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault()
+      setActiveSuggestion((i) => (i - 1 + suggestions.length) % suggestions.length)
+    } else if (e.key === 'Escape') {
+      setShowSuggestions(false)
+    }
+  }
+
   function onSubmit(e) {
     e.preventDefault()
     send()
   }
 
   const sendDisabled = loading || cooldownSec > 0 || !input.trim()
+  const listOpen = showSuggestions && suggestions.length > 0 && !loading && cooldownSec === 0
 
   return (
     <div className="fixed bottom-5 right-5 z-50 flex flex-col items-end gap-3">
@@ -184,27 +219,77 @@ export default function ResumeChatbot() {
 
           <form
             onSubmit={onSubmit}
-            className="p-3 border-t border-[var(--color-line)] bg-[var(--color-card)] flex flex-col gap-2"
+            className="p-3 border-t border-[var(--color-line)] bg-[var(--color-card)] flex flex-col gap-2 relative"
           >
             {cooldownSec > 0 && (
               <p className="text-[11px] text-[var(--color-faint)] font-mono">
                 Wait {cooldownSec}s before sending again.
               </p>
             )}
+
+            {listOpen && (
+              <ul
+                className="absolute bottom-full left-3 right-3 mb-1 border border-[var(--color-line)] bg-[var(--color-card)] shadow-[var(--shadow-float)] max-h-40 overflow-y-auto"
+                role="listbox"
+                aria-label="Question suggestions"
+              >
+                {suggestions.map((s, i) => (
+                  <li key={s}>
+                    <button
+                      type="button"
+                      role="option"
+                      aria-selected={i === activeSuggestion}
+                      onMouseDown={(e) => e.preventDefault()}
+                      onClick={() => acceptSuggestion(s)}
+                      onMouseEnter={() => setActiveSuggestion(i)}
+                      className={`w-full text-left px-3 py-2 text-[12px] transition-colors ${
+                        i === activeSuggestion
+                          ? 'bg-[var(--color-soft)] text-[var(--color-ink)]'
+                          : 'text-[var(--color-mute)] hover:bg-[var(--color-soft)] hover:text-[var(--color-ink)]'
+                      }`}
+                    >
+                      {s}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            )}
+
             <div className="flex gap-2">
-              <input
-                ref={inputRef}
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                placeholder={
-                  cooldownSec > 0
-                    ? `Wait ${cooldownSec}s…`
-                    : 'Ask about experience, skills…'
-                }
-                disabled={loading || cooldownSec > 0}
-                maxLength={500}
-                className="flex-1 text-[13px] px-3 py-2.5 outline-none border border-[var(--color-line)] bg-[var(--color-paper)] text-[var(--color-ink)] placeholder:text-[var(--color-faint)] focus:border-[var(--color-mute)] transition-colors disabled:opacity-50"
-              />
+              <div className="relative flex-1">
+                {ghostSuffix && (
+                  <div
+                    aria-hidden
+                    className="pointer-events-none absolute inset-0 px-3 py-2.5 text-[13px] overflow-hidden whitespace-nowrap"
+                  >
+                    <span className="invisible">{input}</span>
+                    <span className="text-[var(--color-faint)]">{ghostSuffix}</span>
+                  </div>
+                )}
+                <input
+                  ref={inputRef}
+                  value={input}
+                  onChange={(e) => {
+                    setInput(e.target.value)
+                    setShowSuggestions(true)
+                  }}
+                  onFocus={() => setShowSuggestions(true)}
+                  onBlur={() => {
+                    // Delay so suggestion click can fire.
+                    setTimeout(() => setShowSuggestions(false), 120)
+                  }}
+                  onKeyDown={onKeyDown}
+                  placeholder={
+                    cooldownSec > 0
+                      ? `Wait ${cooldownSec}s…`
+                      : 'Ask about experience, skills…'
+                  }
+                  disabled={loading || cooldownSec > 0}
+                  maxLength={500}
+                  autoComplete="off"
+                  className="relative w-full text-[13px] px-3 py-2.5 outline-none border border-[var(--color-line)] bg-[var(--color-paper)] text-[var(--color-ink)] placeholder:text-[var(--color-faint)] focus:border-[var(--color-mute)] transition-colors disabled:opacity-50"
+                />
+              </div>
               <button
                 type="submit"
                 disabled={sendDisabled}
@@ -214,6 +299,11 @@ export default function ResumeChatbot() {
                 <Send size={15} />
               </button>
             </div>
+            {ghostSuffix && (
+              <p className="text-[10px] text-[var(--color-faint)] font-mono">
+                Tab to autocomplete
+              </p>
+            )}
           </form>
         </div>
       )}

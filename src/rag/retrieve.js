@@ -1,4 +1,5 @@
 import { resumeChunks } from './resumeChunks'
+import { normalizeQuery } from './normalizeQuery'
 
 function tokenize(text) {
   return text
@@ -37,9 +38,12 @@ const indexed = resumeChunks.map((chunk) => ({
 
 /**
  * Retrieve the top-k most relevant resume chunks for a query.
+ * Normalizes typos/slang first so messy questions still match.
  */
 export function retrieveChunks(query, topK = 4) {
-  const qTf = termFreq(tokenize(query))
+  const normalized = normalizeQuery(query)
+  // Blend raw + normalized tokens so we don't lose exact matches.
+  const qTf = termFreq([...tokenize(query), ...tokenize(normalized)])
   return indexed
     .map((chunk) => ({
       id: chunk.id,
@@ -60,15 +64,19 @@ export function formatContext(chunks) {
 
 /** Resume / employer topics we treat as in-scope even with weak lexical overlap. */
 const SCOPE_HINTS =
-  /\b(mark|acedo|gercee|resume|cv|experience|educat|school|universit|degree|tesda|work|job|employ|decode|kopilism|project|juan\s*charge|synthesize|virmonte|skill|tech|stack|react|python|javascript|php|laravel|node|docker|aws|ai|rag|certif|gdsc|google\s*developer|contact|email|linkedin|github|hire|portfolio|caloocan|manila|about\s+(him|mark)|who\s+is|background|strength|weakness|availab|salary|rate|role|position)\b/i
+  /\b(mark|acedo|gercee|resume|cv|experience|edu|educat|school|universit|degree|tesda|work|job|employ|decode|kopilism|project|juan\s*charge|synthesize|virmonte|skill|tech|stack|react|python|javascript|php|laravel|node|docker|aws|ai|rag|retrieval|vector|embed|n8n|automat|chatbot|chat\s*bot|assistant|certif|gdsc|google\s*developer|contact|email|linkedin|github|hire|portfolio|caloocan|manila|about\s+(him|mark)|who\s+is|background|strength|weakness|availab|salary|rate|role|position|thru|through|gonr?)\b/i
 
-/** Clearly off-topic patterns (math, coding puzzles, general Q&A, etc.). */
+/** Clearly off-topic patterns (math, coding puzzles, general Q&A, jailbreaks, etc.). */
 const OUT_OF_SCOPE_PATTERNS = [
   /\b(what\s+is|what's|calculate|solve|compute)\s+\d/i,
   /\d+\s*[\+\-\*\/x×÷]\s*\d+/,
   /\b(write|generate|fix|debug|refactor)\s+(me\s+)?(a\s+|some\s+)?(code|function|script|sql|regex)/i,
-  /\b(weather|stock|crypto|news|recipe|joke|poem|story|translate|define)\b/i,
+  /\b(weather|stock|crypto|news|recipe|joke|poem|story|translate)\b/i,
   /\b(capital\s+of|who\s+won|president\s+of|how\s+many\s+people)\b/i,
+  /\b(ignore|disregard|forget)\s+(all\s+)?(previous|prior|above|system)\s+(instructions?|rules?|prompts?)\b/i,
+  /\b(you\s+are\s+now|act\s+as|pretend\s+to\s+be|jailbreak|dan\s+mode)\b/i,
+  /\b(system\s+prompt|reveal\s+(your|the)\s+(prompt|instructions)|show\s+me\s+your\s+(prompt|instructions))\b/i,
+  /\b(do\s+anything\s+now|developer\s+mode|no\s+restrictions)\b/i,
 ]
 
 /**
@@ -82,7 +90,9 @@ export function isInScope(query, chunks, minScore = 0.08) {
 
   const topScore = chunks[0]?.score ?? 0
   if (topScore >= minScore) return true
-  if (SCOPE_HINTS.test(q)) return true
+
+  const normalized = normalizeQuery(q)
+  if (SCOPE_HINTS.test(q) || SCOPE_HINTS.test(normalized)) return true
 
   return false
 }
