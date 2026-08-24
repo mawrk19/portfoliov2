@@ -28,7 +28,7 @@ Open the blue chat button (bottom-right) to ask employers-style questions about 
 
 1. Resume knowledge lives in `src/rag/resumeChunks.js` (source of truth)
 2. `retrieve.js` scores chunks with local TF cosine similarity
-3. Top chunks are injected into a Groq chat prompt (`llama-3.1-8b-instant`)
+3. Top chunks are injected into a Groq chat prompt (`openai/gpt-oss-20b` by default)
 4. Answers stay grounded; unknown facts point to `gercee19@gmail.com`
 
 Edit `resumeChunks.js` whenever your resume changes.

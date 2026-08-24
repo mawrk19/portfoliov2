@@ -3,7 +3,8 @@ import { normalizeQuery } from './normalizeQuery'
 import { checkRateLimit, recordMessage } from './rateLimiter'
 
 const GROQ_URL = 'https://api.groq.com/openai/v1/chat/completions'
-const MODEL = 'llama-3.1-8b-instant'
+// llama-3.1-8b-instant was retired 2026-08-16; Groq recommends openai/gpt-oss-20b
+const DEFAULT_MODEL = 'openai/gpt-oss-20b'
 
 const OUT_OF_SCOPE_REPLY =
   "I can only answer questions about Mark Acedo's background — education, work experience, projects, skills, certifications, and how to contact him. Try asking something about his resume."
@@ -69,6 +70,7 @@ function sanitizeAnswer(answer) {
  */
 export async function askAboutMark(question, history = []) {
   const apiKey = import.meta.env.VITE_GROQ_API_KEY
+  const model = import.meta.env.VITE_GROQ_MODEL || DEFAULT_MODEL
   if (!apiKey) {
     throw new Error(
       'Missing VITE_GROQ_API_KEY. Add it to a .env file in the project root.',
@@ -132,7 +134,7 @@ export async function askAboutMark(question, history = []) {
       Authorization: `Bearer ${apiKey}`,
     },
     body: JSON.stringify({
-      model: MODEL,
+      model,
       messages,
       temperature: 0.25,
       max_tokens: 640,
