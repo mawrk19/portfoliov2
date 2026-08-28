@@ -1,5 +1,6 @@
 import { formatContext, isInScope, retrieveChunks } from './retrieve'
 import { normalizeQuery } from './normalizeQuery'
+import { getChitChatReply } from './chitChat'
 import { checkRateLimit, recordMessage } from './rateLimiter'
 
 const GROQ_URL = 'https://api.groq.com/openai/v1/chat/completions'
@@ -96,6 +97,12 @@ export async function askAboutMark(question, history = []) {
       rateLimited: true,
       retryAfterSec: limit.retryAfterSec,
     }
+  }
+
+  // Greetings / light chitchat — friendly reply, no API tokens
+  const chitChat = getChitChatReply(trimmed)
+  if (chitChat) {
+    return { answer: chitChat, sources: [], blocked: false, rateLimited: false, chitChat: true }
   }
 
   recordMessage()

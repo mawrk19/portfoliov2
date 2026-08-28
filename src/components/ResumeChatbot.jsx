@@ -17,7 +17,7 @@ export default function ResumeChatbot() {
     {
       role: 'assistant',
       content:
-        "Hi — I'm Mark's resume assistant. Ask about his experience, projects, skills, or fit for your team.",
+        "Hey! 👋 I'm Mark's resume assistant — ask me about his experience, projects, skills, or fit for your team.",
     },
   ])
   const bottomRef = useRef(null)
